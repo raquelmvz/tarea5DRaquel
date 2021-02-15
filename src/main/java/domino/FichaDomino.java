@@ -20,26 +20,8 @@ public class FichaDomino {
     //Constructor parametrizado
     public FichaDomino(int parteUno, int parteDos) {
 
-        this.parteUno = parteUno;
-        this.parteDos = parteDos;
-
-        if (valorNoValido(parteUno)) {
-            if (valorEsPar(parteUno)) {
-                this.parteUno = 6;
-            } else if (valorEsImpar(parteUno)) {
-                this.parteUno = 5;
-            }
-
-        }
-
-        if (valorNoValido(parteDos)) {
-            if (valorEsPar(parteDos)) {
-                this.parteDos = 6;
-            } else if (valorEsImpar(parteDos)) {
-                this.parteDos = 5;
-            }
-
-        }
+        this.parteUno = estableceValor(parteUno);
+        this.parteDos = estableceValor(parteDos);
 
     }
 
@@ -62,61 +44,27 @@ public class FichaDomino {
     //Metodos setters
     public void setParteUno(int parteUno) {
 
-        this.parteUno = parteUno;
-
-        if (valorNoValido(parteUno)) {
-            if (valorEsPar(parteUno)) {
-                this.parteUno = 6;
-            } else if (valorEsImpar(parteUno)) {
-                this.parteUno = 5;
-            }
-
-        }
+        this.parteUno = estableceValor(parteUno);
 
     }
 
     public void setParteDos(int parteDos) {
 
-        this.parteDos = parteDos;
-
-        if (valorNoValido(parteDos)) {
-            if (valorEsPar(parteDos)) {
-                this.parteDos = 6;
-            } else if (valorEsImpar(parteDos)) {
-                this.parteDos = 5;
-            }
-
-        }
+        this.parteDos = estableceValor(parteDos);
 
     }
 
-    //Metodo que devuelve si un valor no es valido
-    private static boolean valorNoValido(int valor) {
+    //metodo para establecer el valor valido
+    private int estableceValor(int valor) {
+
         if (valor < 0 || valor > 6) {
-            return true;
-        } else {
-            return false;
+            if (valor % 2 == 0) {
+                valor = 6;
+            } else {
+                valor = 5;
+            }
         }
-    }
-
-//    //Metodo que devuelve si un valor es par
-    private static boolean valorEsPar(int valor) {
-        if (valor % 2 == 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-//
-//    //Metodo que devuelve si un valor es impar
-
-    private static boolean valorEsImpar(int valor) {
-        if (valor % 2 != 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return valor;
     }
 
     @Override
@@ -133,33 +81,9 @@ public class FichaDomino {
     //Metodo de clase publico que genera una ficha aleatoria
     public static FichaDomino generaFichaAleatoria() {
 
-        FichaDomino fichaAleatoria = new FichaDomino();
-
-        int parteUnoAleatoria = aleatorio();
-        int parteDosAleatoria = aleatorio();
-
-        if (valorNoValido(parteUnoAleatoria)) {
-            if (valorEsPar(parteUnoAleatoria)) {
-                parteUnoAleatoria = 6;
-            } else if (valorEsImpar(parteUnoAleatoria)) {
-                parteUnoAleatoria = 5;
-            }
-
-        }
-
-        if (valorNoValido(parteDosAleatoria)) {
-            if (valorEsPar(parteDosAleatoria)) {
-                parteDosAleatoria = 6;
-            } else if (valorEsImpar(parteDosAleatoria)) {
-                parteDosAleatoria = 5;
-            }
-
-        }
-
-        fichaAleatoria.parteUno = parteUnoAleatoria;
-        fichaAleatoria.parteDos = parteDosAleatoria;
-
-        return fichaAleatoria;
+        //aqui no hay que comprobar el valor valido
+        //porque ya lo hace el constructor
+        return new FichaDomino(aleatorio(), aleatorio());
 
     }
 
@@ -175,6 +99,35 @@ public class FichaDomino {
         } while (numeroAleatorio < 0 || numeroAleatorio > 6);
 
         return numeroAleatorio;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 23 * hash + this.parteUno;
+        hash = 23 * hash + this.parteDos;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final FichaDomino other = (FichaDomino) obj;
+        if (this.parteUno != other.parteUno) {
+            return false;
+        }
+        if (this.parteDos != other.parteDos) {
+            return false;
+        }
+        return true;
     }
 
 }
